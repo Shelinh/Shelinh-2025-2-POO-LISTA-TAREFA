@@ -1,4 +1,7 @@
+using System.ComponentModel.Design;
+using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto.Digests;
 
 public class Operacoes
 {
@@ -32,6 +35,12 @@ public class Operacoes
 
     public IList<Tarefa> Listar()
     {
+        using (var conexao = new MySql[Connection(connectionString)
+        {
+            var sql = * SELECT id, ..................;
+        conexao.Open();
+        
+        }
         return Array.Empty<Tarefa>();
     }
 
