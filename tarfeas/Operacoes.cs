@@ -5,11 +5,11 @@ using Org.BouncyCastle.Crypto.Digests;
 
 public class Operacoes
 {
-    private string connectionString = 
+    private string connectionString =
     @"server=phpmyadmin.uni9.marize.us;User ID=user_poo;password=S3nh4!F0rt3;database=user_poo;";
     public int Criar(Tarefa tarefa)
     {
-        using(var conexao = new MySqlConnection(connectionString))
+        using (var conexao = new MySqlConnection(connectionString))
         {
             conexao.Open();
             string sql = @"INSERT INTO tarefa (nome, descricao, dataCriacao, status, dataExecucao) 
@@ -36,8 +36,8 @@ public class Operacoes
     public IList<Tarefa> Listar()
     {
         var tarefas = new List<Tarefa>();
-        using(var conexao = new MySqlConnection(connectionString))
-        {            
+        using (var conexao = new MySqlConnection(connectionString))
+        {
             var sql = "SELECT id, nome, descricao, dataCriacao, dataExecucao, status FROM `tarefa`";
             conexao.Open();
 
@@ -59,18 +59,18 @@ public class Operacoes
                     };
 
                     tarefas.Add(tarefa);
-                     
-                }               
+
+                }
             }
 
         }
         return tarefas;
     }
 
-   public void Alterar(Tarefa tarefa)
-{
-    using var conexao = new MySqlConnection(connectionString);
-    const string sql = @"UPDATE tarefa 
+    public void Alterar(Tarefa tarefa)
+    {
+        using var conexao = new MySqlConnection(connectionString);
+        const string sql = @"UPDATE tarefa 
                          SET nome = @nome,
                              descricao = @descricao,
                              dataCriacao = @dataCriacao,
@@ -78,32 +78,33 @@ public class Operacoes
                              status = @status
                          WHERE id = @id";
 
-    conexao.Open();
+        conexao.Open();
 
-    using var cmd = new MySqlCommand(sql, conexao);
-    cmd.Parameters.AddWithValue("@id", tarefa.Id);
-    cmd.Parameters.AddWithValue("@nome", tarefa.Nome);
-    cmd.Parameters.AddWithValue("@descricao", tarefa.Descricao);
-    cmd.Parameters.AddWithValue("@dataCriacao", tarefa.DataCriacao);
+        using var cmd = new MySqlCommand(sql, conexao);
+        cmd.Parameters.AddWithValue("@id", tarefa.Id);
+        cmd.Parameters.AddWithValue("@nome", tarefa.Nome);
+        cmd.Parameters.AddWithValue("@descricao", tarefa.Descricao);
+        cmd.Parameters.AddWithValue("@dataCriacao", tarefa.DataCriacao);
 
-    if (tarefa.DataExecucao.HasValue)
-        cmd.Parameters.AddWithValue("@dataExecucao", tarefa.DataExecucao.Value);
-    else
-        cmd.Parameters.AddWithValue("@dataExecucao", DBNull.Value);
+        if (tarefa.DataExecucao.HasValue)
+            cmd.Parameters.AddWithValue("@dataExecucao", tarefa.DataExecucao.Value);
+        else
+            cmd.Parameters.AddWithValue("@dataExecucao", DBNull.Value);
 
-    cmd.Parameters.AddWithValue("@status", tarefa.Status);
+        cmd.Parameters.AddWithValue("@status", tarefa.Status);
 
-    cmd.ExecuteNonQuery();
-}
+        cmd.ExecuteNonQuery();
+    }
 
-public void Excluir(int id)
-{
-    using var conexao = new MySqlConnection(connectionString);
-    const string sql = @"DELETE FROM tarefa WHERE id = @id";
-    
-    conexao.Open();
+    public void Excluir(int id)
+    {
+        using var conexao = new MySqlConnection(connectionString);
+        const string sql = @"DELETE FROM tarefa WHERE id = @id";
 
-    using var cmd = new MySqlCommand(sql, conexao);
-    cmd.Parameters.AddWithValue("@id", id);
-    cmd.ExecuteNonQuery();
+        conexao.Open();
+
+        using var cmd = new MySqlCommand(sql, conexao);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.ExecuteNonQuery();
+    }
 }
